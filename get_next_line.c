@@ -5,111 +5,52 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vi-hong <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/03/15 18:58:10 by vi-hong           #+#    #+#             */
-/*   Updated: 2017/03/23 19:43:55 by vi-hong          ###   ########.fr       */
+/*   Created: 2017/03/24 00:15:07 by vi-hong           #+#    #+#             */
+/*   Updated: 2017/03/24 04:14:36 by vi-hong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#define BUFF_SIZE 20
+#define	BUFF_SIZE 10000
 
 
-int		ft_strlen_bslash(char* s)
+int		stock_checker(char* stock)
 {
-	int i = 0;
-	while (s[i] != '\n')
+	int		i = 0;
+	
+	while (stock[i])
+	{
+		if (stock[i] == '\n')
+			return (i);
 		i++;
-	return (i);
-}
-
-void	split_buf(char* buf, char** for_now, char** for_later)
-{
-	int len = ft_strlen_bslash(buf);
-
-	*for_now = ft_strsub(buf, 0, len);
-	*for_later = ft_strsub(buf, len + 1, BUFF_SIZE - len);
+	}
+	return (-1);
 }
 
 
-
-int		get_next_line(const int fd, char** line)
+int		get_next_line(const int fd, char **line)
 {
 	char			buf[BUFF_SIZE + 1];
-	static	char*	for_now = NULL;
-	static	char*	for_later = NULL;
-	static	char*	from_before = "";
-	static	char*	res = NULL;
+	static char*	stock = "";		
 	int				ret = 0;
 
-		
+
 	ret = read(fd, buf, BUFF_SIZE);
+//	printf("%d\n", ret);
 	buf[ret] = '\0';
-	if (ret == 0)
+
+
+	stock = ft_strjoin(stock, ft_strdup(buf));
+
+//	printf("1) %s\n", stock);
+
+
+	if (stock_checker(stock) != -1)
 	{
-		*line = from_before;
-		return 0;	
+	//	printf("2) %d\n", stock_checker(stock));		
+		*line = ft_strsub(stock, 0, stock_checker(stock));
+	   	stock = ft_strsub(stock, stock_checker(stock) + 1, ft_strlen(stock) - stock_checker(stock));
+		return 1;
 	}
-	split_buf(buf, &for_now, &for_later);
-	printf("0) %s\n", buf);	
-	printf("1) %s\n", from_before);	
-	printf("2) %s\n", for_now);	
-	printf("3) %s\n", for_later);	
-
-	res = ft_strjoin(from_before, for_now);
-	printf("res: %s\n", res);
-	from_before = for_later;
-	for_later = NULL;
-	*line = res;
 	return (0);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-int get_next_line(const int fd, char** line)
-{
-	static char		buf[BUFF_SIZE + 1];
-	char*			str1;
-	char*			str2;
-	char*			str_test = "chat";
-	static char*	tmp = "";
-	int				ret = 0;
-
-	ret = read(fd, buf, BUFF_SIZE);
-	printf("BUF A LU:\n\"%s\"\n\n", buf);
-	buf[ret] = '\0';
-	str1 =  ft_strsub(buf, 0, ft_strlen_bslash(buf));
-	printf("str1: %s\n", str1);
-	tmp = ft_strchr(buf, '\n');
-	printf("tmp: %s\n", tmp);
-	*line = str1;
-	return (0);
-}
-*/
