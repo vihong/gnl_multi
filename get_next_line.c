@@ -6,7 +6,7 @@
 /*   By: vi-hong <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/24 00:15:07 by vi-hong           #+#    #+#             */
-/*   Updated: 2017/03/31 16:41:27 by vi-hong          ###   ########.fr       */
+/*   Updated: 2017/03/31 21:03:39 by vi-hong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int		get_next_line(const int fd, char **line)
 	static char	*stock[256];
 	int			ret;
 
-	if (fd < 0 || fd > 255)
+	if (fd < 0 || fd > 255 || BUFF_SIZE <= 0)
 		return (-1);
 	if (!stock[fd])
 		stock[fd] = ft_strdup("");
