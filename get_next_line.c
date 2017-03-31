@@ -6,7 +6,7 @@
 /*   By: vi-hong <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/24 00:15:07 by vi-hong           #+#    #+#             */
-/*   Updated: 2017/03/30 16:29:41 by vi-hong          ###   ########.fr       */
+/*   Updated: 2017/03/31 16:36:32 by vi-hong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,24 +49,26 @@ int		empty_s(char **line, char **stock)
 int		get_next_line(const int fd, char **line)
 {
 	char		buf[BUFF_SIZE + 1];
-	static char	*stock;
+	static char	*stock[256];
 	int			ret;
 
-	if (!stock)
-		stock = ft_strdup("");
+	if (fd < 0 && fd > 255)
+		return (-1);
+	if (!stock[fd])
+		stock[fd] = ft_strdup("");
 	ret = 0;
 	while ((ret = read(fd, buf, BUFF_SIZE)) > 0)
 	{
 		buf[ret] = '\0';
-		stock = ft_strjoin_gnl(stock, buf);
-		if (check_s(stock) != -1)
-			return (clean_stock(line, &stock));
+		stock[fd] = ft_strjoinfree(stock[fd], buf);
+		if (check_s(stock[fd]) != -1)
+			return (clean_stock(line, &stock[fd]));
 	}
 	if (ret == -1)
 		return (-1);
-	if (check_s(stock) != -1)
-		return (clean_stock(line, &stock));
-	if (ft_strlen(stock) != 0)
-		return (empty_s(line, &stock));
+	if (check_s(stock[fd]) != -1)
+		return (clean_stock(line, &stock[fd]));
+	if (ft_strlen(stock[fd]) != 0)
+		return (empty_s(line, &stock[fd]));
 	return (0);
 }
