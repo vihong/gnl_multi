@@ -6,14 +6,13 @@
 /*   By: vi-hong <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/05 11:10:48 by vi-hong           #+#    #+#             */
-/*   Updated: 2017/03/31 16:32:37 by vi-hong          ###   ########.fr       */
+/*   Updated: 2017/03/31 16:45:54 by vi-hong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 # include <stdlib.h>
-# include <stdio.h>
 # include <string.h>
 
 typedef struct		s_list
